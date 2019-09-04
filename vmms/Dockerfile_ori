@@ -1,11 +1,12 @@
 # Autolab - autograding docker image
 
-FROM ubuntu:16.04
-MAINTAINER Wangyang Li <lee.wangyang@gmail.com> 
+FROM ubuntu:14.04
+MAINTAINER Mihir Pandya <mihir.m.pandya@gmail.com>
 
-RUN apt-get update
-RUN apt-get install -y gcc make build-essential perlbrew sudo
-#RUN cpan install Date::Parse -y
+RUN apt-get update --fix-missing
+RUN apt-get install -y gcc
+RUN apt-get install -y make
+RUN apt-get install -y build-essential
 
 # Install autodriver
 WORKDIR /home

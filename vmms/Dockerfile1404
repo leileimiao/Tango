@@ -1,0 +1,56 @@
+# Autolab - autograding docker image
+
+FROM ubuntu:14.04
+MAINTAINER Wangyang Li <lee.wangyang@gmail.com>
+
+#COPY sources.list.14.04 /etc/apt/sources.list
+RUN  sed -i s@/archive.ubuntu.com/@/mirror.tuna.tsinghua.edu.cn/@g /etc/apt/sources.list
+RUN apt-get clean
+RUN apt-get update
+RUN apt-get install -y -q gcc-multilib
+RUN apt-get install -y -q make
+RUN apt-get install -y -q build-essential
+RUN apt-get install -y -q valgrind 3.2.1
+RUN apt-get install -y -q bsdmainutils
+RUN apt-get install -y -q diffutils curl
+RUN apt-get install -y -q tcl8.5
+RUN apt-get install -y -q tcl
+RUN apt-get install -y -q tcl8.5-dev
+RUN apt-get install -y -q tcl-dev
+RUN apt-get install -y -q tk8.5-dev
+RUN apt-get install -y -q tk-dev
+RUN apt-get install -y -q tk8.5
+RUN apt-get install -y -q tk
+RUN apt-get install -y -q bison
+RUN apt-get install -y -q flex
+
+
+# Install autodriver
+WORKDIR /home
+RUN useradd autolab
+RUN useradd autograde
+RUN mkdir autolab autograde output mount
+RUN chown autolab:autolab autolab
+RUN chown autolab:autolab output
+RUN chown autograde:autograde autograde
+#RUN apt-get install -y -q git
+RUN apt-get install -y -q git
+RUN git clone https://github.com/autolab/Tango.git
+#COPY tango_for_docker.tar /home/tango.tar
+#RUN tar xf tango.tar
+WORKDIR Tango/autodriver
+RUN make clean && make
+RUN cp autodriver /usr/bin/autodriver
+RUN chmod +s /usr/bin/autodriver
+
+# Clean up
+WORKDIR /home
+RUN apt-get remove -y -q git
+#RUN rm tango.tar
+RUN apt-get -y -q autoremove
+RUN rm -rf Tango/
+
+# Check installation
+RUN ls -l /home
+RUN which autodriver
+

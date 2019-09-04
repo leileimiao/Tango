@@ -1,17 +1,14 @@
-# Autolab - autograding docker image
+#Autolab - autograding docker image
 
 FROM ubuntu:16.04
 MAINTAINER Honglei Zhang <zhanghonglei1997@gmail.com>
-
-RUN  sed -i s@/archive.ubuntu.com/@/mirror.tuna.tsinghua.edu.cn/@g /etc/apt/sources.list \
-&& sed -i s@/security.ubuntu.com/@/mirror.tuna.tsinghua.edu.cn/@g /etc/apt/sources.list
+RUN sed -i s@/archive.ubuntu.com/@/mirror.tuna.tsinghua.edu.cn/@g /etc/apt/sources.list
 
 RUN apt-get update && apt-get install -y \
 	gcc-multilib \
     make \
     build-essential \
     python2.7 \
-    valgrind 3.2.1 \
     bsdmainutils \
     diffutils \
     curl \
@@ -38,7 +35,7 @@ RUN chown autolab:autolab autolab
 RUN chown autolab:autolab output
 RUN chown autograde:autograde autograde
 
-RUN git clone https://github.com/autolab/Tango.git
+RUN git clone https://github.com/leileimiao/Tango.git
 WORKDIR Tango/autodriver
 RUN make clean && make
 RUN cp autodriver /usr/bin/autodriver
@@ -54,3 +51,4 @@ RUN rm -rf Tango/
 # Check installation
 RUN ls -l /home
 RUN which autodriver
+

@@ -1,18 +1,12 @@
-# Autolab - autograding docker image
+#Autolab - autograding docker image
 
-FROM ubuntu:18.04
+FROM ubuntu:16.04
 MAINTAINER Honglei Zhang <zhanghonglei1997@gmail.com>
-RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-&& sed -i s@/archive.ubuntu.com/@/mirror.tuna.tsinghua.edu.cn/@g /etc/apt/sources.list \
-&& sed -i s@/security.ubuntu.com/@/mirror.tuna.tsinghua.edu.cn/@g /etc/apt/sources.list
-ARG http_proxy="http://162.105.89.151:3128/" 
-ARG https_proxy="http://162.105.89.151:3128/"
+RUN sed -i s@/archive.ubuntu.com/@/mirror.tuna.tsinghua.edu.cn/@g /etc/apt/sources.list
+
 RUN apt-get update && apt-get install -y \
 	gcc-multilib \
-    perlbrew \
     make \
-    gcc-4.8\
-    gcc-4.8-multilib\
     build-essential \
     python2.7 \
     valgrind 3.2.1 \
@@ -20,15 +14,19 @@ RUN apt-get update && apt-get install -y \
     diffutils \
     curl \
     tcl8.5 \
+    tcl \
     tcl8.5-dev \
+    tcl-dev \
     tk8.5-dev \
+    tk-dev \
     tk8.5 \
+    tk \
     bison \
     flex \
     git \
 && apt-get clean \
-&& rm -rf /var/lib/apt/lists/* \
-&& dpkg-reconfigure -f noninteractive tzdata 
+&& rm -rf /var/lib/apt/lists/*
+
 # Install autodriver
 WORKDIR /home
 RUN useradd autolab
